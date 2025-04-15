@@ -21,7 +21,19 @@ function index(req, res) {
 function show(req, res) {
 
     const { id } = req.params;
-    res.json({ message: `List of Movies with id ${id}` });
+
+    const sql = 'SELECT * FROM movies WHERE id = ?';
+
+    connection.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (result.length === 0) return res.status(404).json({ message: 'Movie not found' });
+
+        const movie = result[0];
+
+        res.json(movie);
+    });
+
 };
 
 module.exports = {
