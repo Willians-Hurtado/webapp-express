@@ -24,6 +24,8 @@ function show(req, res) {
 
     const sql = 'SELECT * FROM movies WHERE id = ?';
 
+    const sqlReviews = 'SELECT * FROM reviews WHERE movie_id = ?';
+
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
 
@@ -31,8 +33,19 @@ function show(req, res) {
 
         const movie = result[0];
 
-        res.json(movie);
+        connection.query(sqlReviews, [id], (err, reviews) => {
+            if (err) return res.status(500).json({ error: err.message });
+
+            movie.reviews = reviews;
+
+            console.log(movie);
+
+            res.json(movie);
+        });
+
     });
+
+
 
 };
 
