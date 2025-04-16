@@ -36,8 +36,6 @@ app.get('/', (req, res) => {
 app.use('/api/v1/movies', MovieRouter);
 
 
-
-
 // Middleware to handle errors
 app.use(serverError);
 
